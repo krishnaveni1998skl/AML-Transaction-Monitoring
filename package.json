@@ -1,0 +1,21 @@
+{
+  "name": "aml-transaction-monitoring-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AML Transaction Monitoring & Suspicious Activity Detection Platform",
+  "scripts": {
+    "server:dev": "npm --prefix server run dev",
+    "server:start": "npm --prefix server start",
+    "server:seed": "npm --prefix server run seed",
+    "client:dev": "npm --prefix client run dev",
+    "client:build": "npm --prefix client run build",
+    "test:phase2": "npm --prefix server run test:phase2",
+    "test:phase3": "npm --prefix server run test:phase3",
+    "test:phase4": "npm --prefix server run test:phase4",
+    "test:phase5": "npm --prefix server run test:phase5",
+    "install:all": "npm install --prefix server && npm install --prefix client"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}

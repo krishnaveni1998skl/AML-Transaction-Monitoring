@@ -1,0 +1,159 @@
+[
+  {
+    "ruleCode": "RULE_HIGH_VAL",
+    "name": "High Value Transaction",
+    "description": "Flags single transactions that meet or exceed ₹10,00,000 threshold across all payment rails.",
+    "category": "THRESHOLD",
+    "severity": "HIGH",
+    "weight": 25,
+    "parameters": {
+      "thresholdAmount": 1000000,
+      "currency": "INR"
+    },
+    "isEnabled": true,
+    "isSystemRule": true
+  },
+  {
+    "ruleCode": "RULE_VELOCITY",
+    "name": "Rapid Transaction Velocity",
+    "description": "Flags accounts initiating 10 or more transactions within a sliding 30-minute window.",
+    "category": "VELOCITY",
+    "severity": "HIGH",
+    "weight": 30,
+    "parameters": {
+      "timeWindowMinutes": 30,
+      "transactionCount": 10
+    },
+    "isEnabled": true,
+    "isSystemRule": true
+  },
+  {
+    "ruleCode": "RULE_STRUCTURING",
+    "name": "Structuring / Smurfing Detection",
+    "description": "Detects 3 or more transactions just below the statutory reporting threshold (₹3,50,000 to ₹4,99,999) within 48 hours.",
+    "category": "STRUCTURING",
+    "severity": "CRITICAL",
+    "weight": 40,
+    "parameters": {
+      "minAmount": 350000,
+      "maxAmount": 499999,
+      "minCount": 3,
+      "windowHours": 48
+    },
+    "isEnabled": true,
+    "isSystemRule": true
+  },
+  {
+    "ruleCode": "RULE_RAPID_FLOW",
+    "name": "Rapid In/Out Movement",
+    "description": "Flags accounts where funds are credited and 85% or more is immediately transferred out within 15 minutes.",
+    "category": "RAPID_FLOW",
+    "severity": "CRITICAL",
+    "weight": 35,
+    "parameters": {
+      "windowMinutes": 15,
+      "transferPercentThreshold": 85
+    },
+    "isEnabled": true,
+    "isSystemRule": true
+  },
+  {
+    "ruleCode": "RULE_GEO_RISK",
+    "name": "High-Risk Geographic Flow",
+    "description": "Flags transactions originating from or directed to FATF blacklisted or monitored greylist jurisdictions.",
+    "category": "HIGH_RISK_GEO",
+    "severity": "CRITICAL",
+    "weight": 40,
+    "parameters": {
+      "highRiskCountries": ["KP", "IR", "MM", "SY", "YE", "SS", "ML", "HT", "PA", "KY", "VG"]
+    },
+    "isEnabled": true,
+    "isSystemRule": true
+  },
+  {
+    "ruleCode": "RULE_BEHAVIOR_SPIKE",
+    "name": "Sudden Customer Behavior Change",
+    "description": "Flags transactions exceeding 300% of customer's declared monthly income or 500% of historical average turnover.",
+    "category": "BEHAVIORAL",
+    "severity": "MEDIUM",
+    "weight": 20,
+    "parameters": {
+      "incomeMultiplier": 3.0,
+      "historicalMultiplier": 5.0
+    },
+    "isEnabled": true,
+    "isSystemRule": true
+  },
+  {
+    "ruleCode": "RULE_ROUND_AMOUNT",
+    "name": "Round Amount Transactions",
+    "description": "Flags large, non-commercial round sum transactions (e.g. ₹5,00,000, ₹10,00,000, ₹25,00,000) indicative of illicit settlement.",
+    "category": "ROUND_AMOUNT",
+    "severity": "MEDIUM",
+    "weight": 15,
+    "parameters": {
+      "minAmount": 500000,
+      "roundModulo": 50000
+    },
+    "isEnabled": true,
+    "isSystemRule": true
+  },
+  {
+    "ruleCode": "RULE_UNUSUAL_HOURS",
+    "name": "Off-Hours High Value Activity",
+    "description": "Flags high-value transactions (> ₹3,00,000) initiated during anomalous nocturnal hours (01:00 AM - 04:00 AM).",
+    "category": "UNUSUAL_HOURS",
+    "severity": "LOW",
+    "weight": 10,
+    "parameters": {
+      "startHour": 1,
+      "endHour": 4,
+      "minAmount": 300000
+    },
+    "isEnabled": true,
+    "isSystemRule": true
+  },
+  {
+    "ruleCode": "RULE_PEP_SANCTION",
+    "name": "PEP or Sanctions Indicator",
+    "description": "Flags any transaction where customer or counterparty matches Politically Exposed Persons (PEP) or Sanctions Watchlists.",
+    "category": "SANCTIONS",
+    "severity": "CRITICAL",
+    "weight": 45,
+    "parameters": {
+      "checkPEP": true,
+      "checkSanctions": true
+    },
+    "isEnabled": true,
+    "isSystemRule": true
+  },
+  {
+    "ruleCode": "RULE_LAYERING",
+    "name": "Layering Chain Detection",
+    "description": "Identifies multi-hop pass-through fund routing (A -> B -> C -> D) with low retention (<15%) within 60 minutes.",
+    "category": "LAYERING",
+    "severity": "CRITICAL",
+    "weight": 45,
+    "parameters": {
+      "minHops": 3,
+      "maxWindowMinutes": 60,
+      "maxVariancePercent": 15
+    },
+    "isEnabled": true,
+    "isSystemRule": true
+  },
+  {
+    "ruleCode": "RULE_FAN_IN_FAN_OUT",
+    "name": "Multi-Source Fan-In / Fan-Out",
+    "description": "Detects accounts receiving aggregated funds from 5 or more distinct sources and quickly dispersing them.",
+    "category": "FAN_IN_FAN_OUT",
+    "severity": "HIGH",
+    "weight": 30,
+    "parameters": {
+      "uniqueAccountsThreshold": 5,
+      "windowHours": 24
+    },
+    "isEnabled": true,
+    "isSystemRule": true
+  }
+]
