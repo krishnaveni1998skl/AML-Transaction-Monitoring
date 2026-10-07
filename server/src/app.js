@@ -22,33 +22,42 @@ const app = express();
 // ============================================
 
 const allowedOrigins = [
+  "https://rad-otter-484fa2.netlify.app",
   "http://localhost:5173",
   "http://localhost:5174",
+  "https://aml-transaction-monitoring.onrender.com",
   "https://aml-transaction-monitoring-1.onrender.com",
-];
+  env.CLIENT_URL ? env.CLIENT_URL.replace(/\/+$/, "") : null,
+].filter(Boolean);
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests without origin
-      // (Postman, server-to-server requests, etc.)
-      if (!origin) {
-        return callback(null, true);
-      }
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests without origin (Postman, server-to-server requests, etc.)
+    if (!origin) {
+      return callback(null, true);
+    }
 
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
+    const normalizedOrigin = origin.replace(/\/+$/, "");
+    if (allowedOrigins.includes(normalizedOrigin)) {
+      return callback(null, true);
+    }
 
-      return callback(
-        new Error(`CORS policy: Origin ${origin} is not allowed`),
-      );
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
-);
+    // Origin not allowed: omit CORS headers without throwing an unhandled 500 error
+    return callback(null, false);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Accept",
+  ],
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 // ============================================
 // BODY PARSER MIDDLEWARE
