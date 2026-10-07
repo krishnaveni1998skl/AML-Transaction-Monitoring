@@ -79,9 +79,8 @@ export function App() {
 
   useEffect(() => {
     // Health check on startup
-    fetch('/api/health')
-      .then((res) => res.json())
-      .then((data) => setHealthData(data))
+    api.get('/health')
+      .then((res) => setHealthData(res.data))
       .catch((err) => console.error('Health check failed:', err));
   }, []);
 
